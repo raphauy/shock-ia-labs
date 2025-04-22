@@ -1,0 +1,1 @@
+ALTER TABLE "MCP" ADD COLUMN "tools" json;
