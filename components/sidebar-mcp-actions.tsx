@@ -11,8 +11,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { PlusIcon, FileIcon } from '@/components/icons';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { User } from 'next-auth';
 
-export default function SidebarMcpActions() {
+export default function SidebarMcpActions({
+  user,
+}: { user: User | undefined }) {
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
 
@@ -20,6 +23,10 @@ export default function SidebarMcpActions() {
     setOpenMobile(false);
     router.push(path);
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <SidebarGroup>
