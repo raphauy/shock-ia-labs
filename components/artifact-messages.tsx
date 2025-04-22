@@ -49,6 +49,7 @@ function PureArtifactMessages({
           setMessages={setMessages}
           reload={reload}
           isReadonly={isReadonly}
+          status={status}
         />
       ))}
 
