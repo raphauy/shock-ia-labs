@@ -27,6 +27,8 @@ import { generateTitleFromUserMessage } from '../../actions';
 // import { getWeather } from '@/lib/ai/tools/get-weather';
 import { isProductionEnvironment } from '@/lib/constants';
 import { myProvider } from '@/lib/ai/providers';
+import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 export const maxDuration = 60;
 
@@ -136,8 +138,13 @@ export async function POST(request: Request) {
           ...allMcpTools,
         };
 
+        const timZone = 'America/Montevideo';
+        const now = toZonedTime(new Date(), timZone);
+        const formattedDate = format(now, 'dd/MM/yyyy HH:mm');
+
         const prompt = `
         Eres un asistente amigable! Mantén tus respuestas concisas y útiles.
+        Hoy es ${formattedDate} en Montevideo, Uruguay.
         `;
 
         const result = streamText({
