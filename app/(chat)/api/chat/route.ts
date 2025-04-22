@@ -124,7 +124,7 @@ export async function POST(request: Request) {
     return createDataStreamResponse({
       execute: (dataStream) => {
         const localTools = {
-          getWeather,
+          // getWeather,
           // createDocument: createDocument({ session, dataStream }),
           // updateDocument: updateDocument({ session, dataStream }),
           // requestSuggestions: requestSuggestions({ session, dataStream }),
