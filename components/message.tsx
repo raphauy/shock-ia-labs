@@ -28,6 +28,7 @@ const PurePreviewMessage = ({
   setMessages,
   reload,
   isReadonly,
+  status,
 }: {
   chatId: string;
   message: UIMessage;
@@ -36,6 +37,7 @@ const PurePreviewMessage = ({
   setMessages: UseChatHelpers['setMessages'];
   reload: UseChatHelpers['reload'];
   isReadonly: boolean;
+  status: UseChatHelpers['status'];
 }) => {
   const [mode, setMode] = useState<'view' | 'edit'>('view');
 
@@ -60,7 +62,13 @@ const PurePreviewMessage = ({
           {message.role === 'assistant' && (
             <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border bg-background">
               <div className="translate-y-px">
-                <SparklesIcon size={14} />
+                <div
+                  className={cn({
+                    'animate-spin': status !== 'ready',
+                  })}
+                >
+                  <SparklesIcon size={14} />
+                </div>
               </div>
             </div>
           )}
@@ -206,7 +214,8 @@ const PurePreviewMessage = ({
                           isReadonly={isReadonly}
                         />
                       ) : (
-                        <pre>{JSON.stringify(result, null, 2)}</pre>
+                        // <pre>{JSON.stringify(result, null, 2)}</pre>
+                        <p />
                       )}
                     </div>
                   );
@@ -242,7 +251,9 @@ export const PreviewMessage = memo(
   },
 );
 
-export const ThinkingMessage = () => {
+export const ThinkingMessage = ({
+  status,
+}: { status: UseChatHelpers['status'] }) => {
   const role = 'assistant';
 
   return (
@@ -262,7 +273,13 @@ export const ThinkingMessage = () => {
         )}
       >
         <div className="size-8 flex items-center rounded-full justify-center ring-1 shrink-0 ring-border">
-          <SparklesIcon size={14} />
+          <div
+            className={cn({
+              'animate-spin': status !== 'ready',
+            })}
+          >
+            <SparklesIcon size={14} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-2 w-full">

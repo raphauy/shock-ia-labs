@@ -28,9 +28,9 @@ function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
       action: 'dime si tengo algún evento en mi calendario principal?',
     },
     {
-      title: 'Agregar reunión para mañana',
-      label: 'en mi calendario principal',
-      action: 'agrega una reunión para mañana en mi calendario principal',
+      title: 'Clima en Montevideo',
+      label: 'cómo está el clima en Montevideo?',
+      action: 'cómo está el clima en Montevideo?',
     },
   ];
 
