@@ -18,6 +18,9 @@ export const user = pgTable('user', {
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
+  prompt: text('prompt').default(
+    'Eres un asistente amigable! Mantén tus respuestas concisas y útiles.',
+  ),
 });
 
 export type User = InferSelectModel<typeof user>;

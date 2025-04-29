@@ -19,6 +19,7 @@ import {
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import SidebarMcpActions from './sidebar-mcp-actions';
+import SidebarPromptActions from './sidebar-prompt-actions';
 
 export function AppSidebar({ user }: { user: User | undefined }) {
   const router = useRouter();
@@ -61,6 +62,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarPromptActions user={user} />
         <SidebarMcpActions user={user} />
         <SidebarSeparator />
         <SidebarHistory user={user} />

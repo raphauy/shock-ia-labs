@@ -14,6 +14,7 @@ import {
   saveChat,
   saveMessages,
   getActiveMCPsByUserId,
+  getUserPrompt,
 } from '@/lib/db/queries';
 import {
   generateUUID,
@@ -83,6 +84,14 @@ export async function POST(request: Request) {
       ],
     });
 
+    const timZone = 'America/Montevideo';
+    const now = toZonedTime(new Date(), timZone);
+    const formattedDate = format(now, 'dd/MM/yyyy HH:mm');
+
+    const userPrompt = await getUserPrompt({ userId: session.user.id });
+    const systemPrompt = `\nHoy es ${formattedDate} en Montevideo, Uruguay.`;
+    const prompt = userPrompt + systemPrompt;
+
     // Obtener los MCPs activos del usuario desde la base de datos
     const activeMcps = await getActiveMCPsByUserId({ userId: session.user.id });
 
@@ -137,15 +146,6 @@ export async function POST(request: Request) {
           ...localTools,
           ...allMcpTools,
         };
-
-        const timZone = 'America/Montevideo';
-        const now = toZonedTime(new Date(), timZone);
-        const formattedDate = format(now, 'dd/MM/yyyy HH:mm');
-
-        const prompt = `
-        Eres un asistente amigable! Mantén tus respuestas concisas y útiles.
-        Hoy es ${formattedDate} en Montevideo, Uruguay.
-        `;
 
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),

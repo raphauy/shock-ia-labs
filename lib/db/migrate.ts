@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/postgres-js';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
+import { sql } from 'drizzle-orm';
 
 config({
   path: '.env.local',
@@ -18,7 +18,14 @@ const runMigrate = async () => {
   console.log('⏳ Running migrations...');
 
   const start = Date.now();
-  await migrate(db, { migrationsFolder: './lib/db/migrations' });
+
+  // Ejecutar la migración específica para agregar el campo prompt
+  await db.execute(sql`
+    ALTER TABLE "user" 
+    ADD COLUMN IF NOT EXISTS "prompt" text 
+    DEFAULT 'Eres un asistente amigable! Mantén tus respuestas concisas y útiles.';
+  `);
+
   const end = Date.now();
 
   console.log('✅ Migrations completed in', end - start, 'ms');

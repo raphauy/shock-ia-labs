@@ -703,3 +703,38 @@ export async function getAllUserTools({ userId }: { userId: string }) {
     throw error;
   }
 }
+
+export async function getUserPrompt({ userId }: { userId: string }) {
+  try {
+    const [user] = await db
+      .select({ prompt: userSchema.prompt })
+      .from(userSchema)
+      .where(eq(userSchema.id, userId));
+
+    return user?.prompt || null;
+  } catch (error) {
+    console.error('Failed to get user prompt from database', error);
+    throw error;
+  }
+}
+
+export async function updateUserPrompt({
+  userId,
+  prompt,
+}: {
+  userId: string;
+  prompt: string;
+}) {
+  try {
+    const [updatedUser] = await db
+      .update(userSchema)
+      .set({ prompt })
+      .where(eq(userSchema.id, userId))
+      .returning();
+
+    return updatedUser;
+  } catch (error) {
+    console.error('Failed to update user prompt in database', error);
+    throw error;
+  }
+}

@@ -7,9 +7,11 @@ import {
   deleteMessagesByChatIdAfterTimestamp,
   getMessageById,
   updateChatVisiblityById,
+  updateUserPrompt,
 } from '@/lib/db/queries';
 import { VisibilityType } from '@/components/visibility-selector';
 import { myProvider } from '@/lib/ai/providers';
+import { auth } from '@/app/(auth)/auth';
 
 export async function saveChatModelAsCookie(model: string) {
   const cookieStore = await cookies();
@@ -51,4 +53,23 @@ export async function updateChatVisibility({
   visibility: VisibilityType;
 }) {
   await updateChatVisiblityById({ chatId, visibility });
+}
+
+export async function updatePrompt(prompt: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('No autorizado');
+  }
+
+  try {
+    const updatedUser = await updateUserPrompt({
+      userId: session.user.id,
+      prompt,
+    });
+    return { success: true, prompt: updatedUser.prompt };
+  } catch (error) {
+    console.error('Error al actualizar el prompt:', error);
+    throw new Error('Error al actualizar el prompt');
+  }
 }
